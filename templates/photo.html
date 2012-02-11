@@ -1,0 +1,17 @@
+---
+title: >
+ {{ post.title|striptags }}
+date: {{ post.date }}
+type: photo
+tags: {% if post.tags %}{% for t in post.tags %}{{t}}, {% endfor %}{% endif %}
+attached: {% for p in post.photos %}{{ p.prev.url }}, {% endfor %}
+id: {{ post.id }}
+original_url: {{ post.post_url }}
+---
+<p>
+{% for p in post.photos %}
+<img src="{{ p.prev.url }}" width="{{ p.prev.width }}" height="{{ p.prev.height }}" />
+{% endfor %}
+</p>
+
+{{ post.caption|safe }}

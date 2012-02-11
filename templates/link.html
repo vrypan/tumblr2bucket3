@@ -1,0 +1,12 @@
+---
+title: >
+ {{ post.title|striptags }}
+date: {{ post.date }}
+type: link
+tags: {% if post.tags %}{% for t in post.tags %}{{t}}, {% endfor %}{% endif %}
+id: {{ post.id }}
+original_url: {{ post.post_url }}
+---
+{{ post.url|urlize}} &rarr;
+
+{{ post.description|safe }}

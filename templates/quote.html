@@ -1,0 +1,14 @@
+---
+title: >
+ {{ post.text|truncate(140) }}
+date: {{ post.date }}
+type: quote
+tags: {% if post.tags %}{% for t in post.tags %}{{t}}, {% endfor %}{% endif %}
+id: {{ post.id }}
+original_url: {{ post.post_url }}
+---
+> {{ post.text|safe}}
+
+--{{ post.source|safe }}
+
+{{ post.body|safe }}

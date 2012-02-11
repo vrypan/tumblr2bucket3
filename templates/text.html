@@ -1,0 +1,11 @@
+---
+title: >
+ {{ post.title|striptags }}
+date: {{ post.date }}
+type: post
+tags: {% for t in post.tags %}{{t}}, {% endfor %}
+attached: {% for a in post.attached %}{{ a }}, {% endfor %}
+id: {{ post.id }}
+original_url: {{ post.post_url }}
+---
+ {{ post.body|safe }}

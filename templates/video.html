@@ -1,0 +1,24 @@
+---
+title: >
+ {{ post.caption|striptags|truncate(140) }}
+date: {{ post.date }}
+type: video
+tags: {% if post.tags %}{% for t in post.tags %}{{t}}, {% endfor %}{% endif %}
+id: {{ post.id }}
+original_url: {{ post.post_url }}
+---
+{% if post.local_video %}
+<video id="my_video_1" class="video-js vjs-default-skin" controls
+ preload="auto" width="{{ post.local_video_width }}" height="{{ post.local_video_height }}" poster="{{ post.local_poster}}"
+ data-setup="{}">
+ <source src="{{ post.local_video }}" type='video/mp4'>
+</video>
+
+Download: <a href="{{ post.local_video }}">{{ post.local_video }}</a>
+{% else %}
+	{{ post.player.2.embed_code|safe }}
+{% endif %}
+
+{{ post.caption|safe }}
+
+ {{ post.body|safe }}

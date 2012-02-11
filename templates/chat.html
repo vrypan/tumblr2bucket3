@@ -1,0 +1,13 @@
+---
+title: >
+ {{ post.title|striptags }}
+date: {{ post.date }}
+type: chat
+tags: {% if post.tags %}{% for t in post.tags %}{{t}}, {% endfor %}{% endif %}
+id: {{ post.id }}
+original_url: {{ post.post_url }}
+---
+{% for l in post.dialogue %}
+{{ l.label }} *{{l.phrase|safe}}*
+
+{% endfor %}
