@@ -10,8 +10,6 @@ import urllib
 import urllib2
 import urlparse
 import os
-# from django.template import Template, Context, loader
-# from django.conf import settings
 from jinja2 import Template, FileSystemLoader, Environment
 
 import re
@@ -23,12 +21,13 @@ def remove_html_tags(data):
 	p = re.compile(r'<.*?>')
 	return p.sub('', data)
 
-class tumblr2html(object):
+class tumblr2bucket3(object):
 	def __init__(self, 
 			tumblr_api_key=None, 
 			blog=None, 
 			html_path=None, 
-			cont=False):		
+			cont=False,
+			templates_dir='./templates'):		
 		self.tumblr_api_key = tumblr_api_key
 		self.blog = blog
 		self.html_path = html_path
@@ -58,7 +57,7 @@ class tumblr2html(object):
 		self.ppp = 10 # posts per page
 		(self.total_pages,res) = divmod(self.total_posts, self.ppp)
 
-		self.tpl_env = Environment(loader=FileSystemLoader('templates'))
+		self.tpl_env = Environment(loader=FileSystemLoader(templates_dir))
 		
 	def get_blog_info(self):
 		request_url = 'http://api.tumblr.com/v2/blog/%s/info?api_key=%s' % (self.blog, self.tumblr_api_key)
@@ -317,18 +316,23 @@ def main(*argv):
 		action="store_true", default=False,
 		dest="cont",
 		help="only download new posts since last backup [does nothing yet]")
+	parser.add_argument("-t", "--template-dir",
+		dest="templates_dir",
+		help="templates dir")
+
 
 	args = parser.parse_args()
 	
-	t2h = tumblr2html(
+	t2b = tumblr2bucket3(
 		tumblr_api_key=args.api_key, 
 		blog=args.blog, 
 		html_path=args.path, 
-		cont=args.cont)
-	if not t2h.init_ok:
+		cont=args.cont,
+		templates_dir = args.templates_dir)
+	if not t2b.init_ok:
 		parser.print_help()
 	else:
-		t2h.render_posts()
+		t2b.render_posts()
 	
 if __name__ == '__main__':
 	main()
