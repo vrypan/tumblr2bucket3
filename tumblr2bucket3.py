@@ -264,13 +264,17 @@ class tumblr2bucket3(object):
 		json_response = json.load(response)
 		if json_response['meta']['status'] == 200:
 			for p in json_response['response']['posts']:
+				print "before: p_id=%s, min_id=%s, last_post_id=%s" % (p['id'], self.min_id, self.last_post_id)
 				if self.cont and p['id'] <= self.min_id:
-					self.last_post_id = self.min_id
+					if self.last_post_id < self.min_id:
+						self.last_post_id = self.min_id
+					print "After #1: p_id=%s, min_id=%s, last_post_id=%s" % (p['id'], self.min_id, self.last_post_id)
 					return False
 				if self.last_post_id < p['id']:
 					self.last_post_id = p['id']
 				self.render_post(post=p, blog=json_response['response']['blog'])
 				self.rendered_posts = self.rendered_posts +1 
+				print "After #2: p_id=%s, min_id=%s, last_post_id=%s" % (p['id'], self.min_id, self.last_post_id)
 		return True
 
 	def render_posts(self):
